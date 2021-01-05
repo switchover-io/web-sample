@@ -7,7 +7,16 @@ Simple example to show you how to use Switchover directly in the browser (vanill
 Before we can start you have to edit the `index.html`:
 
 1. Open the `index.html` with you favorite editor (e.g. Visual Studio Code)
-2. Replace the `SDK_KEY` and `TOGGLE_NAME` with your environment specific SDK Key and you toggle name
+2. Replace the `SDK_KEY` and `TOGGLE_NAME` with your environment specific SDK Key and you toggle name:
+```html
+<script>
+const sdkKey = 'SDK_KEY';
+const toggle = 'TOGGLE_NAME';
+
+//more...
+</script>
+```
+
 3. Save and open the file with you favorite browser
 
 ## Usage
