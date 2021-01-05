@@ -12,8 +12,7 @@ Before we can start you have to edit the `index.html`:
 <script>
 const sdkKey = 'SDK_KEY';
 const toggle = 'TOGGLE_NAME';
-
-//more...
+...
 </script>
 ```
 
