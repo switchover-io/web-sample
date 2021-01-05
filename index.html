@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Switchover JS Client Browser Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/switchover-js-sdk@1.2.2/dist/switchover.min.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="w-full text-gray-900 antialiased min-h-screen bg-gray-100">
+    
+    <div class="max-w-4xl mx-auto mt-10 px-6 py-4">
+        <h1 class="font-bold text-4xl uppercase leading-none tracking-wider">Wilhelm Wiesel's* awesome demo</h1>
+        <p class=" font-regular leading-none pt-4 text-2xl uppercase tracking-wider text-gray-500">Switchover Web Sample</p>
+    </div>
+
+    <div class="max-w-4xl mx-auto flex mt-4 px-6 py-4">
+        <p class="flex rounded-lg bg-gray-900 px-4 py-4 text-gray-100 font-semibold text-lg">Your toggle value: <span class="uppercase px-2" id="toggle_status">-</span></p>
+    </div>
+
+    <div class="w-full sm:max-w-4xl mx-auto mt-4 px-6 py-4 text-gray-500">
+        <p class="font-semibold uppercase">How to: </p>
+        <ol class="list-decimal font-semibold list-inside space-y-2 mt-1">
+            <li>Open this file (index.html) in an editor</li>
+            <li>Change the variable <span class="font-mono bg-red-100 rounded p-1 text-red-400">sdkKey</span> and <span class="font-mono bg-red-100 rounded p-1 text-red-400">toggleName</span> to your environment values</li>
+            <li>Save and reload this page in the browser</li>
+            <li>Go to Switchover and change the toggle status (inactive -> active) in your environment. Don't forget to publish it</li>
+            <li>This JS Client is configured for auto-refresh. Toggle status should be switching in various seconds...</li>
+        </ol>
+    </div>
+
+    <div id="greets" class="w-full sm:max-w-4xl mx-auto mt-10 text-gray-500 px-6 hidden">
+        <div class="py-3 sm:mx-auto">
+            <div class="px-4 py-10 bg-green-700 rounded-lg sm:rounded-lg p-20">
+                <div class="max-w-md mx-auto text-green-100 text-center">
+                    <p class="text-3xl text-white font-semibold leading-none">Yeah! Your toggle is activated!
+                    <p class="text-xl mt-2 leading-none">Best greetings from Wilhelm.</p>
+                    <div class="mt-6 pt-4">
+                        <a class="border border-white hover:bg-white hover:text-green-700 px-4 py-2 rounded text-lg text-white font-semibold" target="_blank" href="https://support.switchover.io/docs/plain-javascript">Read the docs &rarr; </a>
+                    </div>       
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="w-full sm:max-w-4xl flex mx-auto mt-4 px-6 py-4 text-gray-500">
+        <div class="mx-auto">
+            <a class="underline px-2" target="_blank" href="https://switchover.io">switchover.io</a>
+            <span class="px-2">* <a class="underline" target="_blank" href="https://support.switchover.io/">About Wilhelm</a></span>
+        </div>
+    </div>
+
+
+    <script>     
+    
+        /**
+         * NOTE:
+         * Please change the sdkKey and the toggle to your actual values.
+         */
+        const sdkKey = 'SDK_KEY';
+        const toggle = 'TOGGLE_NAME';
+
+        function showGreetsPanel(showGreets) {
+            const ele = document.querySelector('#toggle_status');
+
+            ele.textContent = showGreets
+
+            const greets = document.querySelector('#greets');
+            if (showGreets) {
+                greets.classList.remove('hidden');
+            } else {
+                greets.classList.add('hidden');
+            }
+        }
+
+        /*
+         * Initialize the client with onUpdate function which will 
+         * be triggerd on every refreshInterval 
+         */
+        var client = Switchover.createClient(sdkKey, {
+
+            autoRefresh: true,
+
+            refreshInterval: 10,
+
+            onUpdate: function(keys) {
+                console.log('Changed keys ' + (keys || []).join(", "));
+                showGreetsPanel(client.toggleValue(toggle, false));
+            }
+        }, 'debug');
+        
+        /**
+         * We calling fetch to init the internal toggle cache the first time
+         */
+        client.fetch( function() {
+            console.log("initialised");
+
+            const showGreets = client.toggleValue(toggle, false);
+            showGreetsPanel(showGreets);
+        });
+    </script>
+
+</body>
